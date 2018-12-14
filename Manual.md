@@ -220,7 +220,7 @@ Users may use 'git clone https://github.com/AppliedBioinformatics/runBNG.git' in
              -R      relativeSD. Default is 0.03 (optional).
              -L      large jobs maximum memory (GB). Default is 128 (optional).
              -S      small jobs maximum memory (GB). Default is 7.5 (optional).
-	     -B      max backbone intensity. Default is 0.6 (optional).
+             -B      max backbone intensity. Default is 0.6 (optional).
              -o      output directory.
      ```
      $runBNG compare -h 
