@@ -488,6 +488,8 @@ if [[ $1 == "fa2cmap" ]] && [[ $# -gt 1 ]]; then
 			enz_n=BsrDI
 		elif [[ `echo "$enz_n" | grep -qi '^bseCI$' && echo "yes" || echo "no"` == "yes" ]]; then
 			enz_n=bseCI
+		elif [[ `echo "$enz_n" | grep -qi '^BssSI$' && echo "yes" || echo "no"` == "yes" ]]; then
+			enz_n=BssSI
 		else
 			echo "Oops! We cannot recognise the enzyme name. Please check or contact us for a solution"
 			echo
