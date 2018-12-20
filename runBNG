@@ -1201,7 +1201,9 @@ fi
 if [[ $1 == "denovo" ]] && [[ $# -gt 1 ]];then
 	arg1=$1
 	shift
-	deno_options=':ht:s:b:T:j:i:B:z:r:p:n:d:f:R:L:S:o:l:m:';
+	# liuxingliang
+	# deno_options=':ht:s:b:T:j:i:B:z:r:p:n:d:f:R:L:S:o:l:m:';
+	deno_options=':ht:s:b:T:j:i:B:z:r:p:n:d:f:R:L:S:o:l:m:C:';
 	while getopts "$deno_options" opt; do
 		case "$opt" in
 			h) echo -e "$deno_msg_d";echo -e "$deno_msg"; exit 0;;
@@ -1224,6 +1226,8 @@ if [[ $1 == "denovo" ]] && [[ $# -gt 1 ]];then
 			L) lm=${OPTARG};;
 			S) sm=${OPTARG};;
 			o) outDir=${OPTARG};;
+			# liuxingliang
+			C) bypass=${OPTARG};;
 			\?) echo;echo -e "Oops! Unknown option -$OPTARG">&2; echo "Please check '`basename $0` denovo -h' and continue...";echo; exit 0;;
 			:) echo;echo -e "Missing option argument for -$OPTARG">&2; echo; exit 1;;
 		esac
@@ -1278,6 +1282,11 @@ if [[ $1 == "denovo" ]] && [[ $# -gt 1 ]];then
 
 	if [[ -z "$maxIntensity" ]]; then
 		maxIntensity=0.6
+	fi
+
+	# liuxingliang
+	if [[ -z "$bypass" ]]; then
+		bypass=0
 	fi
 
 	check_integer $nthreads; check_integer $njobs; check_integer $iter; check_integer $gs
@@ -1403,11 +1412,16 @@ if [[ $1 == "denovo" ]] && [[ $# -gt 1 ]];then
 
 
 	if [[ -z "$ref" ]];then
-		python "$scriptsDir"/pipelineCL.py -w -d -U -T "$nthreads" -j "$njobs" -i "$iter" -t "$toolsDir" -a "$outDir/optArguments_new.xml" -l "$outDir" -b "$bnx" >&1
+		# liuxingliang
+		# python "$scriptsDir"/pipelineCL.py -w -d -U -T "$nthreads" -j "$njobs" -i "$iter" -t "$toolsDir" -a "$outDir/optArguments_new.xml" -l "$outDir" -b "$bnx" >&1
+		python "$scriptsDir"/pipelineCL.py -w -d -U -T "$nthreads" -j "$njobs" -i "$iter" -t "$toolsDir" -a "$outDir/optArguments_new.xml" -l "$outDir" -b "$bnx" -B "$bypass" >&1
 
 	else
 		if [[ -s "$ref" ]] && [[ -r "$ref" ]];then
-			python "$scriptsDir"/pipelineCL.py -w -d -U -T "$nthreads" -j "$njobs" -i "$iter" -t "$toolsDir" -a "$outDir/optArguments_new.xml" -l "$outDir" -b "$bnx" -r "$ref" >&1
+			# liuxingliang
+			# python "$scriptsDir"/pipelineCL.py -w -d -U -T "$nthreads" -j "$njobs" -i "$iter" -t "$toolsDir" -a "$outDir/optArguments_new.xml" -l "$outDir" -b "$bnx" -r "$ref" >&1
+			python "$scriptsDir"/pipelineCL.py -w -d -U -T "$nthreads" -j "$njobs" -i "$iter" -t "$toolsDir" -a "$outDir/optArguments_new.xml" -l "$outDir" -b "$bnx" -r "$ref" -B "$bypass" >&1
+
 		else
 			echo "Oops! It seems the reference: '${ref}' is not existent or readable. Please check!"
 		fi
@@ -1873,7 +1887,7 @@ if [[ $1 == "hybrid" ]] && [[ $# -gt 1 ]];then
 	echo "## The maximum number of threads or CPUs is: ${maxthreads}"
 	echo "## The maximum number of RAM (Gb) is: ${maxmem}"
 	echo "## The output directory is: ${outDir}"
-	echo 
+	echo
 	cp -f "$scriptsDir"/HybridScaffold/hybridScaffold_config.xml "$outDir"/../hybridScaffold_config_new.xml
 	RefAA=`echo "$RefA" | sed "s/\//::::/g"`
 
