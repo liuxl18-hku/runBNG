@@ -245,6 +245,9 @@ deno_msg="$deno_msg	-R	relativeSD. Default is 0.03 (optional).\n"
 deno_msg="$deno_msg	-L	large jobs maximum memory (GB). Default is 128 (optional).\n";
 deno_msg="$deno_msg	-S	small jobs maximum memory (GB). Default is 7.5 (optional).\n";
 deno_msg="$deno_msg	-o	output directory.\n";
+# liuxingliang
+deno_msg="$deno_msg	-C	Skip steps, using previous result. <= 0:None, 1:ImgDetect, 2:NoiseChar/Subsample, 3:Pairwise, 4:Assembly, 5:RefineA, 6:RefineB, (7:RefineNGS -f only), 7:merge0, 8+(i-1)*2:Ext(i), 9+(i-1)*2:Mrg(i), N+1:alignmol.\n";
+
 
 ##Compare assembled BioNano data to a ref cmap file
 comp_msg_d="\nDescription: Compare a query BioNano cmap file to a ref cmap file";
