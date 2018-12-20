@@ -1284,11 +1284,6 @@ if [[ $1 == "denovo" ]] && [[ $# -gt 1 ]];then
 		maxIntensity=0.6
 	fi
 
-	# liuxingliang
-	if [[ -z "$bypass" ]]; then
-		bypass=0
-	fi
-
 	check_integer $nthreads; check_integer $njobs; check_integer $iter; check_integer $gs
 
 	last_chr_t="${toolsDir: -1}"
@@ -1414,13 +1409,21 @@ if [[ $1 == "denovo" ]] && [[ $# -gt 1 ]];then
 	if [[ -z "$ref" ]];then
 		# liuxingliang
 		# python "$scriptsDir"/pipelineCL.py -w -d -U -T "$nthreads" -j "$njobs" -i "$iter" -t "$toolsDir" -a "$outDir/optArguments_new.xml" -l "$outDir" -b "$bnx" >&1
-		python "$scriptsDir"/pipelineCL.py -w -d -U -T "$nthreads" -j "$njobs" -i "$iter" -t "$toolsDir" -a "$outDir/optArguments_new.xml" -l "$outDir" -b "$bnx" -B "$bypass" >&1
+		if [[ -z "$bypass" ]]; then
+			python "$scriptsDir"/pipelineCL.py -w -d -U -T "$nthreads" -j "$njobs" -i "$iter" -t "$toolsDir" -a "$outDir/optArguments_new.xml" -l "$outDir" -b "$bnx" >&1
+		else
+			python "$scriptsDir"/pipelineCL.py -B "$bypass" -d -U -T "$nthreads" -j "$njobs" -i "$iter" -t "$toolsDir" -a "$outDir/optArguments_new.xml" -l "$outDir" -b "$bnx" >&1
+		fi
 
 	else
 		if [[ -s "$ref" ]] && [[ -r "$ref" ]];then
 			# liuxingliang
 			# python "$scriptsDir"/pipelineCL.py -w -d -U -T "$nthreads" -j "$njobs" -i "$iter" -t "$toolsDir" -a "$outDir/optArguments_new.xml" -l "$outDir" -b "$bnx" -r "$ref" >&1
-			python "$scriptsDir"/pipelineCL.py -w -d -U -T "$nthreads" -j "$njobs" -i "$iter" -t "$toolsDir" -a "$outDir/optArguments_new.xml" -l "$outDir" -b "$bnx" -r "$ref" -B "$bypass" >&1
+			if [[ -z "$bypass" ]]; then
+				python "$scriptsDir"/pipelineCL.py -w -d -U -T "$nthreads" -j "$njobs" -i "$iter" -t "$toolsDir" -a "$outDir/optArguments_new.xml" -l "$outDir" -b "$bnx" -r "$ref" >&1
+			else
+				python "$scriptsDir"/pipelineCL.py -B "$bypass" -d -U -T "$nthreads" -j "$njobs" -i "$iter" -t "$toolsDir" -a "$outDir/optArguments_new.xml" -l "$outDir" -b "$bnx" -r "$ref" >&1
+			fi
 
 		else
 			echo "Oops! It seems the reference: '${ref}' is not existent or readable. Please check!"
